@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "webpack",
-    "start": "npm run build && PORT=3000 BABEL_ENV=development node server.js"
+    "start": "PORT=3000 npm run build && PORT=3000 BABEL_ENV=development node server.js"
   },
   "dependencies": {
     "@babel/cli": "^7.4.4",
