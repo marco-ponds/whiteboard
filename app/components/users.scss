@@ -1,0 +1,22 @@
+.userslist {
+    z-index: 99;
+    position: fixed;
+    float: right;
+    right: 0;
+    padding: 0;
+    margin: 36px 36px 0 0;
+
+    & ul {
+        margin: 0;
+        padding: 0;
+
+        & li {
+            height: 50px;
+            width: 50px;
+            border-radius: 50px;
+            margin: 0;
+            padding: 16px;
+            list-style: none;
+        }
+    }
+}
