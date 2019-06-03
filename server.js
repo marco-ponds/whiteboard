@@ -20,7 +20,8 @@ server.get('/api/image', ServerController.getSingleImage);
 server.get("/", ServerController.sendIndexHtml);
 
 SocketController.start(io);
+const PORT = process.env.PORt || 5000;
 
-http.listen(process.env.PORT, function(){
-  console.log('listening on *:' + process.env.PORT);
+http.listen(PORT, function(){
+  console.log('listening on *:' + PORT);
 });
