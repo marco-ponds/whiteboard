@@ -64,7 +64,7 @@ class CanvasContext {
         this.ctx.beginPath();
         const textSize = Number(size.key) + 20;
         this.ctx.font = `${textSize}px verdana, sans-serif`;
-        this.ctx.filLStyle = color;
+        this.ctx.fillStyle = color.key;
         this.ctx.fillText(content, position.x, position.y);
         this.ctx.stroke();
         this.ctx.closePath();

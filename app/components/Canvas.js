@@ -1,6 +1,6 @@
 import React from 'react';
 import './canvas.scss';
-import {TOOLS} from './constants';
+import {HEIGHT, TOOLS, WIDTH} from './constants';
 import CanvasContext from './lib/CanvasContext';
 
 class Canvas extends React.Component {
@@ -71,7 +71,7 @@ class Canvas extends React.Component {
 
   handleRestoreLoaded = ({ target }) => {
     if (this.ctx && target) {
-      this.ctx.drawImage(target, 0, 0, 5000, 5000);
+      this.ctx.drawImage(target, 0, 0, WIDTH, HEIGHT);
     }
   }
 
@@ -221,9 +221,9 @@ class Canvas extends React.Component {
   render() {
     return (
       <canvas
-        className='canvas'
-        height={5000}
-        width={5000}
+        className='canvas board'
+        height={HEIGHT}
+        width={WIDTH}
         ref={this.handleRef}
         onMouseMove={this.handleMouseMove}
         onMouseDown={this.handleMouseDown}

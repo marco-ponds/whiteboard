@@ -1,3 +1,6 @@
+export const HEIGHT = 5000;
+export const WIDTH = 5000;
+
 export const COLORS = [
     {  key: '#3498db', name: 'peter river' },
     {  key: '#34495e', name: 'wet asphalt' },

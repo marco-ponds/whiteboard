@@ -23508,8 +23508,13 @@ body,
   position: absolute;
   top: 0;
   margin: 0;
-  background: #eee;
   cursor: crosshair; }
+  .canvas.grid {
+    z-index: 90;
+    background: #fefefe; }
+  .canvas.board {
+    z-index: 91;
+    background: rgba(238, 238, 238, 0.1); }
 
 .toolbar {
   z-index: 99;

@@ -8,6 +8,7 @@ import UsersList from './UsersList';
 import SocketConnection from './lib/SocketConnection';
 import Cookie from 'js-cookie';
 import axios from 'axios';
+import Grid from './Grid';
 
 class Whiteboard extends React.Component {
     constructor(props) {
@@ -17,6 +18,10 @@ class Whiteboard extends React.Component {
             tool: TOOLS.DRAW,
             color: COLORS[1],
             size: SIZES[0],
+            grid: {
+                enabled: false,
+                size: 50
+            },
             text: {
                 visible: false,
                 position: { x: 0, y: 0},
@@ -158,7 +163,8 @@ class Whiteboard extends React.Component {
             size,
             text,
             user,
-            users
+            users,
+            grid
         } = this.state;
 
         return (
@@ -172,6 +178,7 @@ class Whiteboard extends React.Component {
                     onToolChange={this.handleToolChange}
                 />
                 <Canvas
+                    grid={grid}
                     tool={tool}
                     color={color}
                     size={size}
@@ -184,6 +191,7 @@ class Whiteboard extends React.Component {
                     onDrawSquare={this.handleDrawSquare}
                     onDrawCircle={this.handleDrawCircle}
                 />
+                <Grid gridSize={grid.size}/>
                 <UsersList
                     users={users}
                 />
