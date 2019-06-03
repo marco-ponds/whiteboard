@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar } from 'antd';
+import { Avatar, Tooltip } from 'antd';
 import './users.scss';
 
 const UsersList = ({ users }) => (
@@ -7,9 +7,12 @@ const UsersList = ({ users }) => (
         <ul>
             { users.map(u => (
                 <li key={u.id}>
-                    <Avatar size={'large'} style={{ backgroundColor: `#${u.color}`, verticalAlign: 'middle' }}>
-                        { u.name }
-                    </Avatar>
+                    <Tooltip placement="bottom" title={u.name}>
+                        <Avatar
+                            icon="user"
+                            size={'large'}
+                            style={{ backgroundColor: `#${u.color}`, verticalAlign: 'middle' }} />
+                    </Tooltip>
                 </li>
             ))}
         </ul>

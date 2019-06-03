@@ -164,42 +164,54 @@ class Canvas extends React.Component {
 
     switch(tool) {
       case TOOLS.DRAW:
-        this.pressing && this.drawLine(this.previous, this.current, color, size);
+        this.pressing && this.drawLine(this.previous, this.current, color, size, true);
         break;
       default:
         break;
     }
   }
 
-  drawLine = (start, stop, color, size) => {
-      const { onDrawLine } = this.props;
+  drawLine = (_start, _stop, color, size, skipGrid) => {
+      const { onDrawLine, grid } = this.props;
+      let start = _start;
+      let stop = _stop;
+
+      if (!skipGrid) {
+        start = CanvasContext.convertPositionToGrid(_start, grid);
+        stop = CanvasContext.convertPositionToGrid(_stop, grid);
+      }
 
       CanvasContext.drawLine(start, stop, color, size);
 
-      onDrawLine({
-        start,
-        stop,
-        color,
-        size
-      });
+      onDrawLine({ start, stop, color, size });
   }
 
-  drawRect = (start, stop, color, size) => {
-    const { onDrawSquare } = this.props;
+  drawRect = (_start, _stop, color, size) => {
+    const { onDrawSquare, grid } = this.props;
+
+    const start = CanvasContext.convertPositionToGrid(_start, grid);
+    const stop = CanvasContext.convertPositionToGrid(_stop, grid);
 
     CanvasContext.drawSquare(start, stop, color, size);
     onDrawSquare({ start, stop, color, size });
   }
 
-  drawCircle = (start, stop, color, size) => {
-    const { onDrawCircle } = this.props;
+  drawCircle = (_start, _stop, color, size) => {
+    const { onDrawCircle, grid } = this.props;
+
+    const start = CanvasContext.convertPositionToGrid(_start, grid);
+    const stop = CanvasContext.convertPositionToGrid(_stop, grid);
 
     CanvasContext.drawCircle(start, stop, color, size);
     onDrawCircle({ start, stop, color, size });
   }
 
-  drawText = (text, color, size) => {
-    const { onTextDone, onDrawText } = this.props;
+  drawText = (_text, color, size) => {
+    const { onTextDone, onDrawText, grid } = this.props;
+    const text = {
+      ..._text,
+      position: CanvasContext.convertPositionToGrid(_text.position, grid)
+    };
 
     CanvasContext.drawText(text, color, size);
 

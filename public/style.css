@@ -23502,7 +23502,8 @@ body,
   margin: 0 !important;
   padding: 0 !important;
   height: 100vh;
-  width: 100vw; }
+  width: 100vw;
+  background: #eee; }
 
 .canvas {
   position: absolute;
@@ -23511,10 +23512,10 @@ body,
   cursor: crosshair; }
   .canvas.grid {
     z-index: 90;
-    background: #fefefe; }
+    background: #efefef; }
   .canvas.board {
     z-index: 91;
-    background: rgba(238, 238, 238, 0.1); }
+    background: rgba(238, 238, 238, 0.2); }
 
 .toolbar {
   z-index: 99;
@@ -23544,16 +23545,23 @@ body,
         border-bottom-left-radius: 8px; }
 
 .colorpicker,
-.sizepicker {
+.sizepicker,
+.gridcheckbox {
   margin-top: 16px; }
   .colorpicker .color-dropdown-button,
   .colorpicker .size-dropdown-button,
+  .colorpicker .gridcheckbox-input,
   .sizepicker .color-dropdown-button,
-  .sizepicker .size-dropdown-button {
+  .sizepicker .size-dropdown-button,
+  .sizepicker .gridcheckbox-input,
+  .gridcheckbox .color-dropdown-button,
+  .gridcheckbox .size-dropdown-button,
+  .gridcheckbox .gridcheckbox-input {
     padding: 16px;
     height: 50px;
     width: 50px;
     border: none;
+    background: white;
     border-right: 1px solid #ddd; }
 
 .colorblock-list-item,

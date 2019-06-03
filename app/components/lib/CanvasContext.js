@@ -15,6 +15,17 @@ class CanvasContext {
         this.ctx = null;
     }
 
+    convertPositionToGrid(position, grid) {
+        if (grid.enabled) {
+            return {
+                x: Math.round(position.x/grid.size) * grid.size,
+                y: Math.round(position.y/grid.size) * grid.size,
+            };
+        }
+
+        return position;
+    }
+
     drawLine(start, stop, color, size) {
         this.ctx.beginPath();
         this.ctx.moveTo(start.x, start.y);

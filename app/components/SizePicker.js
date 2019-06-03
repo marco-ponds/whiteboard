@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Dropdown, Button } from 'antd';
+import {Menu, Dropdown, Button, Tooltip} from 'antd';
 import { SIZES } from './constants';
 
 const SizeBlock = ({ size, name }) => {
@@ -28,13 +28,15 @@ const SizePicker = ({ onSizeChange, size }) => {
     const { key } =  size;
 
     return (
-        <div className={'sizepicker'}>
-            <Dropdown overlay={menu} placement="bottomRight" trigger={['click']}>
-                <Button className={'size-dropdown-button'}>
-                    <SizeBlock size={key} />
-                </Button>
-            </Dropdown>
-        </div>
+        <Tooltip placement="right" title={'tool size'}>
+            <div className={'sizepicker'}>
+                <Dropdown overlay={menu} placement="bottomRight" trigger={['click']}>
+                    <Button className={'size-dropdown-button'}>
+                        <SizeBlock size={key} />
+                    </Button>
+                </Dropdown>
+            </div>
+        </Tooltip>
     );
 };
 

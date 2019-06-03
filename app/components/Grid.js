@@ -16,7 +16,7 @@ class Grid extends React.Component {
             this.ctx.lineTo(WIDTH, step);
         }
 
-        this.ctx.strokeStyle = '#ccc';
+        this.ctx.strokeStyle = '#bbb';
         this.ctx.lineWidth = 1;
         this.ctx.stroke();
         this.ctx.closePath();

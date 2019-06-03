@@ -91,6 +91,15 @@ class Whiteboard extends React.Component {
         this.setState({ size });
     }
 
+    handleGridCheckboxChange = () => {
+        this.setState({
+            grid: {
+                ...this.state.grid,
+                enabled: !this.state.grid.enabled
+            }
+        });
+    }
+
     handleTextStart = (position) => {
         // tthis should set text modal visible
         this.setState({
@@ -167,15 +176,19 @@ class Whiteboard extends React.Component {
             grid
         } = this.state;
 
+        console.log(grid);
+
         return (
             <div>
                 <Toolbar
                     tool={tool}
                     size={size}
                     color={color}
+                    grid={grid}
                     onColorChange={this.handleColorChange}
                     onSizeChange={this.handleSizeChange}
                     onToolChange={this.handleToolChange}
+                    onGridCheckboxChange={this.handleGridCheckboxChange}
                 />
                 <Canvas
                     grid={grid}
@@ -191,7 +204,7 @@ class Whiteboard extends React.Component {
                     onDrawSquare={this.handleDrawSquare}
                     onDrawCircle={this.handleDrawCircle}
                 />
-                <Grid gridSize={grid.size}/>
+                { grid.enabled && <Grid gridSize={grid.size}/> }
                 <UsersList
                     users={users}
                 />

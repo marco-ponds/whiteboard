@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "build": "webpack",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "npm run build && npm start"
   },
   "dependencies": {
     "@babel/cli": "^7.4.4",
