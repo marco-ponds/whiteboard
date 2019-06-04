@@ -5,8 +5,8 @@ import CanvasContext from './CanvasContext';
 class SocketConnection {
 
     connect(user, onConnectionChange) {
-        this.socket = io();
         this.user = user;
+        this.socket = io();
 
         this.socket.on(SOCKET_EVENTS.NEW, onConnectionChange);
         this.socket.on(SOCKET_EVENTS.DISCONNECT, onConnectionChange);
@@ -21,7 +21,6 @@ class SocketConnection {
 
     disconnect = () => {
         // do something here
-        console.log('disconnecting', this.user);
         this.socket.emit(SOCKET_EVENTS.DISCONNECT, { ...this.user });
     }
 
@@ -29,7 +28,6 @@ class SocketConnection {
 
     handleDraw = (data) => {
         const { user, start, stop, color, size } = data;
-        console.log(this.user);
         if (user.id !== this.user.id) {
             CanvasContext.drawLine(start, stop, color, size);
         }

@@ -16,7 +16,7 @@ server.use(morgan('dev'));
 server.use(express.static('public'));
 
 server.post('/api/image', ServerController.uploadImage);
-server.get('/api/image', ServerController.getSingleImage);
+server.get('/api/image/:room', ServerController.getSingleImage);
 server.get("/", ServerController.sendIndexHtml);
 
 SocketController.start(io);

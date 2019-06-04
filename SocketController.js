@@ -10,7 +10,7 @@ const SOCKET_EVENTS = {
     USERS: 'users'
 };
 
-let users = [];
+let users = {};
 let socketIO = null;
 
 class SocketController {
@@ -23,8 +23,8 @@ class SocketController {
     static handleConnection(socket) {
         console.log('user is connecting');
 
-        socket.on(SOCKET_EVENTS.NEW, SocketController.handleNewUser);
-        socket.on(SOCKET_EVENTS.DISCONNECT, SocketController.handleDisconnection);
+        socket.on(SOCKET_EVENTS.NEW, SocketController.handleNewUser(socket));
+        socket.on(SOCKET_EVENTS.DISCONNECT, SocketController.handleDisconnection(socket));
 
         socket.on(SOCKET_EVENTS.DRAW, SocketController.broadcast(SOCKET_EVENTS.DRAW));
         socket.on(SOCKET_EVENTS.TEXT, SocketController.broadcast(SOCKET_EVENTS.TEXT));
@@ -35,20 +35,32 @@ class SocketController {
 
     static broadcast(event) {
         return function(data) {
-            socketIO.emit(event, data);
+            const room = data.user && data.user.room || 'default';
+            socketIO.to(room).emit(event, data);
         }
     }
 
-    static handleNewUser(data) {
-        users.push(data);
-        socketIO.emit(SOCKET_EVENTS.NEW, { users });
+    static handleNewUser(socket) {
+        return function (data) {
+            const room = data.room || 'default';
+            if (!users[room]) {
+                users[room] = [];
+            }
+            users[room].push(data);
+
+            socket.join(room);
+            socketIO.to(room).emit(SOCKET_EVENTS.NEW, { users: users[room] });
+        }
     }
 
-    static handleDisconnection(data) {
-        console.log('receiving disconnection from', data, data.id, data.name);
-        users = users.filter(user => user.id !== data.id);
-        console.log(users);
-        socketIO.emit(SOCKET_EVENTS.DISCONNECT, { users });
+    static handleDisconnection(socket) {
+        return function(data) {
+            const room = data.room;
+            users[room] = users[room] && users[room].filter(user => user.id !== data.id) || [];
+
+            socket.leave(room);
+            socketIO.to(room).emit(SOCKET_EVENTS.DISCONNECT, { users: users[room] });
+        }
     }
 }
 

@@ -1,9 +1,11 @@
 const File = require('./File');
+const path = require('path');
 
 class ServerController {
 
     static uploadImage(req, res) {
         const files = req.files;
+        const room = req.body.room;
 
         if (!files) {
             return res
@@ -13,7 +15,7 @@ class ServerController {
             const data = files.data;
             const buffer = data.data;
 
-            const file = new File('board.png', __dirname);
+            const file = new File('board.png', path.join(__dirname, 'boards', room));
             file.setContent(buffer);
 
             if (file.write()) {
@@ -29,11 +31,12 @@ class ServerController {
     }
 
     static getSingleImage(req, res) {
-         const file = new File('board.png', __dirname);
+        const room = req.params.room;
+        const file = new File('board.png', path.join(__dirname, 'boards', room));
 
-         if (file.exists()) {
-             return res.sendFile(file.fullPath);
-         }
+        if (file.exists()) {
+            return res.sendFile(file.fullPath);
+        }
 
         return res
             .status(404)

@@ -43,9 +43,14 @@ class Canvas extends React.Component {
   }
   
   componentDidMount() {
+    const { user } = this.props;
+    const { room } = user;
+
+    console.log(room);
+
     window.addEventListener('resize', this.handleResize, false);
     this.autosave = setInterval(this.save, 5000);
-    this.restore();
+    this.restore(room);
   }
   
   componentWillUnmount() {
@@ -61,10 +66,10 @@ class Canvas extends React.Component {
     }
   }
 
-  restore = () => {
+  restore = (room) => {
     // restore canvas from imagedata
     const image = new Image();
-    image.src = '/api/image';
+    image.src = `/api/image/${room}`;
 
     image.addEventListener('load', this.handleRestoreLoaded);
   }

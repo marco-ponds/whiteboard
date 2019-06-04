@@ -29,6 +29,7 @@ class Whiteboard extends React.Component {
             },
             user: {
                 visible: false,
+                room: location.hash.replace('#', '') || 'default',
                 name: Cookie.get('username'),
                 id: Cookie.get('id'),
                 color: Cookie.get('color')
@@ -137,8 +138,10 @@ class Whiteboard extends React.Component {
 
     handleSave = (blob) => {
         // upload blob to be
+        const { user } = this.state;
         const formData = new FormData();
         formData.append('data', blob, 'board.png');
+        formData.append('room', user.room);
 
         axios.post('/api/image', formData);
     }
@@ -158,6 +161,7 @@ class Whiteboard extends React.Component {
         this.setState({
             user: {
                 visible: false,
+                room: this.state.user.room,
                 name,
                 id,
                 color
@@ -175,8 +179,6 @@ class Whiteboard extends React.Component {
             users,
             grid
         } = this.state;
-
-        console.log(grid);
 
         return (
             <div>
@@ -196,6 +198,7 @@ class Whiteboard extends React.Component {
                     color={color}
                     size={size}
                     text={text}
+                    user={user}
                     onSave={this.handleSave}
                     onTextStart={this.handleTextStart}
                     onTextDone={this.handleTextModalDone}
