@@ -160,9 +160,10 @@ class Canvas extends React.Component {
         this.onDeleteEnd();
         break;
       default:
-        this.pressing = false;
         break;
     }
+
+    this.pressing = false;
   }
 
   handleMouseMove = (e) => {
