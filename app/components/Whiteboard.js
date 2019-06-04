@@ -9,6 +9,12 @@ import SocketConnection from './lib/SocketConnection';
 import Cookie from 'js-cookie';
 import axios from 'axios';
 import Grid from './Grid';
+import CanvasContext from './lib/CanvasContext';
+
+import { Typography } from 'antd';
+
+const { Title } = Typography;
+
 
 class Whiteboard extends React.Component {
     constructor(props) {
@@ -29,7 +35,7 @@ class Whiteboard extends React.Component {
             },
             user: {
                 visible: false,
-                room: location.hash.replace('#', '') || 'default',
+                room: this.extractLocationHash(),
                 name: Cookie.get('username'),
                 id: Cookie.get('id'),
                 color: Cookie.get('color')
@@ -38,6 +44,8 @@ class Whiteboard extends React.Component {
         };
     }
 
+    extractLocationHash = () => location.hash.replace('#', '') || 'default';
+
     handleBeforeUnload = () => {
         console.log('this is when the app is about to be destroyed');
         SocketConnection.disconnect();
@@ -45,9 +53,20 @@ class Whiteboard extends React.Component {
         window.removeEventListener('beforeunload', this.handleBeforeUnload);
     }
 
+    handleHashChange = () => {
+        SocketConnection.disconnect();
+        this.setState({
+            user: {
+                ...this.state.user,
+                room: this.extractLocationHash()
+            }
+        }, this.startConnection);
+    }
+
     componentDidMount() {
         // listening for unload event
         window.addEventListener('beforeunload', this.handleBeforeUnload);
+        window.addEventListener('hashchange', this.handleHashChange);
         // control if cookie exists with username
         // if not, render modal for username
         // if exists, starts connection to BE
@@ -146,6 +165,23 @@ class Whiteboard extends React.Component {
         axios.post('/api/image', formData);
     }
 
+    handleClearAll = () => {
+        // clear everything then save
+        CanvasContext.clearAll();
+        CanvasContext.toBlob(this.handleSave);
+    }
+
+    handleExport = () => {
+        // getting the blob then exporting
+        CanvasContext.toBlob((blob) => {
+            const link = document.createElement('a');
+            link.download = `${this.state.user.room}_board.png`;
+
+            link.href = URL.createObjectURL(blob);
+            link.click();
+        });
+    }
+
     handleUsernameCompleted = (name) => {
         // store this name inside cookie
         // setting the state with new color for the user
@@ -182,6 +218,9 @@ class Whiteboard extends React.Component {
 
         return (
             <div>
+                <Title className={'title'}>
+                    {user.room}
+                </Title>
                 <Toolbar
                     tool={tool}
                     size={size}
@@ -191,6 +230,8 @@ class Whiteboard extends React.Component {
                     onSizeChange={this.handleSizeChange}
                     onToolChange={this.handleToolChange}
                     onGridCheckboxChange={this.handleGridCheckboxChange}
+                    onClearAll={this.handleClearAll}
+                    onExportPng={this.handleExport}
                 />
                 <Canvas
                     grid={grid}

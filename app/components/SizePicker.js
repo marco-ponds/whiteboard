@@ -15,9 +15,9 @@ const SizeBlock = ({ size, name }) => {
 
 const SizePicker = ({ onSizeChange, size }) => {
     const menu = (
-        <Menu>
+        <Menu className={"toolbar-menu"}>
             { SIZES.map((s) => (
-                <Menu.Item onClick={onSizeChange(s)} className={'sizeblock-list-item'}>
+                <Menu.Item onClick={onSizeChange(s)} className={'toolbar-list-item'}>
                     <SizeBlock
                         size={s.key}
                         name={s.name} />

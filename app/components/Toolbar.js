@@ -6,6 +6,7 @@ import SizePicker from './SizePicker';
 import './toolbar.scss';
 import {TOOLS, TOOLS_ICONS} from './constants';
 import GridCheckbox from './GridCheckbox';
+import ExtraToolbar from './ExtraToolbar';
 
 class Toolbar extends React.Component {
 
@@ -33,6 +34,8 @@ class Toolbar extends React.Component {
             onColorChange,
             onSizeChange,
             onGridCheckboxChange,
+            onClearAll,
+            onExportPng,
             color,
             size,
             tool,
@@ -44,6 +47,12 @@ class Toolbar extends React.Component {
                 <ul>
                     { this.getMenu(tool, onToolChange) }
                 </ul>
+
+                <ExtraToolbar
+                    onClearAll={onClearAll}
+                    onExportPng={onExportPng}
+                />
+
                 <ColorPicker
                     color={color}
                     onColorChange={onColorChange}
@@ -55,6 +64,7 @@ class Toolbar extends React.Component {
                 <GridCheckbox
                     onGridCheckboxChange={onGridCheckboxChange}
                     value={grid.enabled} />
+
             </div>)
     }
 }

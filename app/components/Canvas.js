@@ -35,10 +35,17 @@ class Canvas extends React.Component {
     }
   }
 
-  componentDidUpdate() {
-    const { text, tool, color, size } = this.props;
+  componentDidUpdate(prevProps) {
+    const { text, tool, color, size, user } = this.props;
     if (text.content && tool === TOOLS.TEXT) {
         this.drawText(text, color, size);
+    }
+    const { room } = user;
+
+    if (room !== prevProps.user.room) {
+      // we changed hash
+      CanvasContext.clearAll();
+      CanvasContext.restore(room);
     }
   }
   
@@ -50,7 +57,7 @@ class Canvas extends React.Component {
 
     window.addEventListener('resize', this.handleResize, false);
     this.autosave = setInterval(this.save, 5000);
-    this.restore(room);
+    CanvasContext.restore(room);
   }
   
   componentWillUnmount() {
@@ -61,23 +68,8 @@ class Canvas extends React.Component {
   save = () => {
     // create blob from canvas and send it to be
     const { onSave } = this.props;
-    if (this.canvas) {
-      this.canvas.toBlob(onSave);
-    }
-  }
 
-  restore = (room) => {
-    // restore canvas from imagedata
-    const image = new Image();
-    image.src = `/api/image/${room}`;
-
-    image.addEventListener('load', this.handleRestoreLoaded);
-  }
-
-  handleRestoreLoaded = ({ target }) => {
-    if (this.ctx && target) {
-      this.ctx.drawImage(target, 0, 0, WIDTH, HEIGHT);
-    }
+    CanvasContext.toBlob(onSave);
   }
 
 
@@ -229,7 +221,7 @@ class Canvas extends React.Component {
 
       if (this.canvas) {
         this.ctx = this.canvas.getContext('2d');
-        CanvasContext.start(this.canvas, this.ctx);
+        CanvasContext.start(this.canvas, this.ctx, HEIGHT, WIDTH);
 
         this.handleResize();
       }

@@ -8,3 +8,14 @@ body,
   width: 100vw;
   background: #eee;
 }
+
+.title {
+  margin-left: 36px;
+  position: fixed;
+  margin-top: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 52px;
+  letter-spacing: -2px;
+  color: #34495e;
+}

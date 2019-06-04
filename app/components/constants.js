@@ -39,9 +39,14 @@ export const TOOLS_ICONS = {
     TEXT: 'font-size',
     SQUARE: 'border-outer',
     CIRCLE: 'minus-circle',
-    LINE: 'stock',
+    LINE: 'line',
     ARROW: 'arrow-right'
 };
+
+export const EXTRA_TOOLS_ICONS = {
+    SAVE: 'save',
+    EXPORT: 'export',
+}
 
 export const SOCKET_EVENTS = {
     NEW: 'new',

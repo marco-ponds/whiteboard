@@ -15,9 +15,9 @@ const ColorBlock = ({ color, name }) => {
 
 const ColorPicker = ({ onColorChange, color }) => {
     const menu = (
-        <Menu>
+        <Menu className="toolbar-menu">
             { COLORS.map((c) => (
-                <Menu.Item onClick={onColorChange(c)} className={'colorblock-list-item'}>
+                <Menu.Item onClick={onColorChange(c)} className={'toolbar-list-item'}>
                     <ColorBlock
                         color={c.key}
                         name={c.name} />

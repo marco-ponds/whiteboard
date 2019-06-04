@@ -1,3 +1,5 @@
+import {HEIGHT, WIDTH} from '../constants';
+
 class CanvasContext {
 
     constructor() {
@@ -5,9 +7,12 @@ class CanvasContext {
     }
 
     // this guy is responsible for drawing all things
-    start(canvas, context) {
+    start(canvas, context, height, width) {
         this.canvas = canvas;
         this.ctx = context;
+
+        this.height = height;
+        this.width = width;
     }
 
     destroy() {
@@ -24,6 +29,34 @@ class CanvasContext {
         }
 
         return position;
+    }
+
+    clearAll = () => {
+        this.ctx.clearRect(0, 0, this.height, this.width);
+    }
+
+    restore = (room) => {
+        // restore canvas from imagedata
+        const image = new Image();
+        image.src = `/api/image/${room}`;
+
+        image.addEventListener('load', this.handleRestoreLoaded);
+    }
+
+    handleRestoreLoaded = ({ target }) => {
+        this.drawImage(target);
+    }
+
+    toBlob(callback) {
+        if (this.canvas) {
+            this.canvas.toBlob(callback);
+        }
+    }
+
+    drawImage(img) {
+        if (this.ctx && img) {
+            this.ctx.drawImage(img, 0, 0, this.width, this.height);
+        }
     }
 
     drawLine(start, stop, color, size) {

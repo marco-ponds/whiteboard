@@ -7,10 +7,11 @@ const UsersList = ({ users }) => (
         <ul>
             { users.map(u => (
                 <li key={u.id}>
-                    <Tooltip placement="bottom" title={u.name}>
+                    <Tooltip placement="left" title={u.name}>
                         <Avatar
                             icon="user"
                             size={'large'}
+                            src={`https://api.adorable.io/avatars/120/${u.name}.png`}
                             style={{ backgroundColor: `#${u.color}`, verticalAlign: 'middle' }} />
                     </Tooltip>
                 </li>
