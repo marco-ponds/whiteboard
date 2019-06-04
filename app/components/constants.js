@@ -31,7 +31,8 @@ export const TOOLS = {
     SQUARE: 'square',
     CIRCLE: 'circle',
     LINE: 'line',
-    ARROW: 'arrow'
+    ARROW: 'arrow',
+    RUBBER: 'rubber'
 };
 
 export const TOOLS_ICONS = {
@@ -40,7 +41,8 @@ export const TOOLS_ICONS = {
     SQUARE: 'border-outer',
     CIRCLE: 'minus-circle',
     LINE: 'line',
-    ARROW: 'arrow-right'
+    ARROW: 'arrow-right',
+    RUBBER: 'border'
 };
 
 export const EXTRA_TOOLS_ICONS = {

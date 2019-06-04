@@ -1,13 +1,16 @@
 import React from 'react';
 import './canvas.scss';
 import {HEIGHT, TOOLS, WIDTH} from './constants';
-import CanvasContext from './lib/CanvasContext';
+import CanvasContext, {BASE_RUBBER_COLOR, BASE_SIZE} from './lib/CanvasContext';
+
+const RUBBER_COLOR = { key: BASE_RUBBER_COLOR };
+const RUBBER_SIZE = { key: BASE_SIZE };
 
 class Canvas extends React.Component {
-  
+
   constructor(props) {
     super(props);
-    
+
     this.pressing = false;
     this.dot_flag = false;
 
@@ -15,7 +18,7 @@ class Canvas extends React.Component {
       x: 0,
       y: 0
     };
-    
+
     this.current = {
       x: 0,
       y: 0
@@ -28,10 +31,11 @@ class Canvas extends React.Component {
 
     this.canvas = null;
     this.autosave = null;
-    
+
     this.state = {
       height: document.body.clientHeight,
-      width: document.body.clientWidth
+      width: document.body.clientWidth,
+      deleting: false
     }
   }
 
@@ -48,7 +52,7 @@ class Canvas extends React.Component {
       CanvasContext.restore(room);
     }
   }
-  
+
   componentDidMount() {
     const { user } = this.props;
     const { room } = user;
@@ -59,7 +63,7 @@ class Canvas extends React.Component {
     this.autosave = setInterval(this.save, 5000);
     CanvasContext.restore(room);
   }
-  
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
     clearInterval(this.autosave);
@@ -79,7 +83,7 @@ class Canvas extends React.Component {
       width: document.body.clientWidth
     });
   }
-  
+
   getMousePos = (evt) => {
     const rect = this.canvas.getBoundingClientRect(), // abs. size of element
         scaleX = this.canvas.width / rect.width,    // relationship bitmap vs. element for X
@@ -121,6 +125,10 @@ class Canvas extends React.Component {
       case TOOLS.DRAW:
         this.handleDotDrawing(color, size);
         break;
+      case TOOLS.RUBBER:
+        this.handleDotDrawing(RUBBER_COLOR, RUBBER_SIZE);
+        this.onDeleteStart();
+        break;
       case TOOLS.SQUARE:
       case TOOLS.CIRCLE:
       case TOOLS.LINE:
@@ -148,6 +156,9 @@ class Canvas extends React.Component {
       case TOOLS.LINE:
         this.pressing && this.drawLine(this.start, mouse, color, size);
         break;
+      case TOOLS.RUBBER:
+        this.onDeleteEnd();
+        break;
       default:
         this.pressing = false;
         break;
@@ -163,9 +174,20 @@ class Canvas extends React.Component {
       case TOOLS.DRAW:
         this.pressing && this.drawLine(this.previous, this.current, color, size, true);
         break;
+      case TOOLS.RUBBER:
+        this.pressing && this.drawLine(this.previous, this.current, RUBBER_COLOR, RUBBER_SIZE, true);
+        break;
       default:
         break;
     }
+  }
+
+  onDeleteStart = () => {
+    this.setState({ deleting: true });
+  }
+
+  onDeleteEnd = () => {
+    this.setState({ deleting: false });
   }
 
   drawLine = (_start, _stop, color, size, skipGrid) => {
@@ -228,9 +250,10 @@ class Canvas extends React.Component {
   }
   
   render() {
+    const deleting = this.state.deleting ? 'deleting' : '';
     return (
       <canvas
-        className='canvas board'
+        className={`canvas board ${deleting}`}
         height={HEIGHT}
         width={WIDTH}
         ref={this.handleRef}

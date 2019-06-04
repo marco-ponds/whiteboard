@@ -1,4 +1,6 @@
-import {HEIGHT, WIDTH} from '../constants';
+export const BASE_COLOR = 'rgba(238, 238, 238, 0.2)';
+export const BASE_RUBBER_COLOR = 'rgba(238, 238, 238, 1)';
+export const BASE_SIZE = 80;
 
 class CanvasContext {
 
@@ -35,8 +37,18 @@ class CanvasContext {
         this.ctx.clearRect(0, 0, this.height, this.width);
     }
 
+    fillEverything = () => {
+        this.ctx.beginPath();
+        this.ctx.fillStyle = BASE_COLOR;
+        this.ctx.fillRect(0, 0, this.width, this.height );
+        this.ctx.stroke();
+        this.ctx.closePath();
+    }
+
     restore = (room) => {
         // restore canvas from imagedata
+        this.fillEverything();
+
         const image = new Image();
         image.src = `/api/image/${room}`;
 
