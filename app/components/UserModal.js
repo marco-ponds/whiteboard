@@ -55,6 +55,7 @@ class UserModal extends  React.Component {
                     onChange={this.handleTextChange}
                     value={this.state.value}
                     size="large"
+                    onPressEnter={this.handleModalConfirm}
                 />
             </Modal>
         );

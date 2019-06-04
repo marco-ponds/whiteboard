@@ -6,7 +6,7 @@ class TextModal extends  React.Component {
     constructor(props) {
         super(props);
 
-        this.MAX = 50;
+        this.MAX = 100;
 
         this.state = {
             value: ''
@@ -44,6 +44,7 @@ class TextModal extends  React.Component {
                     onChange={this.handleTextChange}
                     value={this.state.value}
                     size="large"
+                    onPressEnter={this.handleModalConfirm}
                     placeholder="Text goes here"
                 />
             </Modal>
